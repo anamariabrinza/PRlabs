@@ -1,6 +1,4 @@
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
+import org.apache.commons.mail.*;
 import org.apache.commons.net.pop3.POP3Client;
 import org.apache.commons.net.pop3.POP3MessageInfo;
 
@@ -17,17 +15,17 @@ public class Main {
     public static void main( String[] args ) throws IOException {
         System.out.println("Menu");
         System.out.println("1. Send the message");
-        System.out.println("2. Read the message");
+        System.out.println("2. Send a message with attachment");
+        System.out.println("3. Read the message");
 
         Scanner scanner = new Scanner(System.in);
 
-       // ReadMail readMail = new ReadMail();
-       // SendMail sendMail = new SendMail();
+
 
         switch (scanner.nextInt()) {
 
             case 1:
-                // SendMail.main();
+
                 System.out.println("Client simplu de posta – trimitere mesaj");
                 try {
                     Email email = new SimpleEmail();
@@ -38,11 +36,47 @@ public class Main {
                     email.setMsg("Mesaj frumos si fragut!");
                     email.addTo("ana@mail.md");
                     email.send();
+
                 } catch (EmailException e) {
                     e.printStackTrace();
                 }
                 break;
+
             case 2:
+                System.out.println("Client simplu de posta – trimitere mesaj cu atașament");
+                try {
+
+                    // Create the attachment
+                    EmailAttachment attachment = new EmailAttachment();
+                    attachment.setPath("D:\\UTM\\Anul 3\\PR\\Lab#4\\pr_lab4/UTM.png");
+                    attachment.setDisposition(EmailAttachment.ATTACHMENT);
+                    attachment.setDescription("Picture of John");
+                    attachment.setName("John");
+
+                    // Create the email message
+                    MultiPartEmail email = new MultiPartEmail();
+                    email.setHostName("127.0.0.1");
+                    email.setFrom("b@mail.md");
+                    email.setSubject("The picture");
+                    email.setMsg("Here is the picture you wanted");
+                    email.addTo("ana@mail.md");
+
+
+                    // add the attachment
+                    email.attach(attachment);
+
+                    // send the email
+                    email.send();
+
+                }  catch (EmailException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+
+
+
+                case 3:
                 System.out.println("Client simplu de posta – citire mesaj");
                 try {
 
@@ -55,7 +89,7 @@ public class Main {
                         POP3MessageInfo[] messages = client.listMessages();
                         System.out.println( "Mesaje: " + messages.length );
                         System.out.println( "Textul mesajului");
-                        Reader r = client.retrieveMessage( messages[ 3 ].number );
+                        Reader r = client.retrieveMessage( messages[ 7 ].number );
                         BufferedReader br = new BufferedReader( r );
                         String line;
                         while( ( line = br.readLine()) != null )
@@ -71,6 +105,8 @@ public class Main {
                     client.disconnect();
                 } catch (IOException ex){ }
                 break;
+
+
 
             default:
                 System.out.println("Default choice");
