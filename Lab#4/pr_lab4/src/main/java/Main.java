@@ -89,7 +89,7 @@ public class Main {
                         POP3MessageInfo[] messages = client.listMessages();
                         System.out.println( "Mesaje: " + messages.length );
                         System.out.println( "Textul mesajului");
-                        Reader r = client.retrieveMessage( messages[ 7 ].number );
+                        Reader r = client.retrieveMessage( messages[ 8 ].number );
                         BufferedReader br = new BufferedReader( r );
                         String line;
                         while( ( line = br.readLine()) != null )
